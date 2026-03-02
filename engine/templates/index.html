@@ -1,0 +1,30 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>AI Code Engine</title>
+        <link rel="stylesheet" href="{% static 'style.css' %}">
+    </head>
+
+    <body>
+        <div class="container">
+            <h1>Local Coding Engine</h1>
+            <textarea id="prompt" placeholder="the function you need..."></textarea>
+
+            <div class="controls">
+                <select id="language">
+                    <option value="python">Python</option>
+                    <option value="javascript">JS</option>
+                    <option value="typescript">TS</option>
+                    <option value="csharp">C#</option>
+                </select>
+
+                <button id="generateBtn">Generate</button>
+            </div>
+            <div class="loader" id="loader">Generating...</div>
+            <pre id="output"></pre>
+        </div>
+        <script src="{% static 'app.js' %}"></script>
+    </body>
+</html>

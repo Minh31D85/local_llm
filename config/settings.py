@@ -22,7 +22,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/6.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-@=ler^d^-!(!fzxj!&p&w8tu-!jruflmn1!pi&58rbag(a4vhj'
+SECRET_KEY = os.getenv("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -30,6 +30,28 @@ DEBUG = True
 ALLOWED_HOSTS = []
 
 
+
+# ------------------------------------------------------------
+# STATISCHE DATEIEN
+# ------------------------------------------------------------
+# URL unter der statische Dateien erreichbar sind
+STATIC_URL = '/static/'
+
+# Zielordner für collectstatic im Produktionsbetrieb
+STATIC_ROOT = BASE_DIR / "staticfiles"
+
+# WhiteNoise Storage:
+# - Komprimiert Dateien
+# - Erzeugt Hash im Dateinamen
+# - Aktiviert Cache-Busting
+STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
+
+
+
+# ------------------------------------------------------------
+# UMGEBUNGSVARIABLEN LADEN
+# ------------------------------------------------------------
+# Lädt Variablen aus .env Datei ins Environment
 load_dotenv()
 
 # Application definition
@@ -46,6 +68,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -59,7 +82,7 @@ ROOT_URLCONF = 'config.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [BASE_DIR / "engine/templates"],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -114,12 +137,6 @@ TIME_ZONE = 'UTC'
 USE_I18N = True
 
 USE_TZ = True
-
-
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/6.0/howto/static-files/
-
-STATIC_URL = 'static/'
 
 
 # Ollama 

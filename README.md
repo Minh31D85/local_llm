@@ -13,3 +13,6 @@ Für Backend Nutzung reicht:
 ollama serve
 
 und dein Django macht HTTP Calls.
+
+
+http://127.0.0.1:8000/api/code/

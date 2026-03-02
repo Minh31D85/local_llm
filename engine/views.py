@@ -31,3 +31,7 @@ def generate_code(request):
     
     result = serv.generate(prompt, language)
     return Response({"code": result})
+
+
+def index(request):
+    return render(request, "index.html")
