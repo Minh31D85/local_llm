@@ -35,6 +35,7 @@ load_dotenv()
 # Application definition
 
 INSTALLED_APPS = [
+    'engine',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
