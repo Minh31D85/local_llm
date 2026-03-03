@@ -40,9 +40,10 @@ ENV PYTHONUNBUFFERED=1
 
 WORKDIR /app
 
-COPY requirements.txt .
+COPY pyproject.toml .
 
-RUN pip install --no-cache-dir -r requirements.txt
+RUN pip install --upgrade pip \
+    && pip install .
 
 COPY . .
 
@@ -66,14 +67,10 @@ services:
     image: postgres:16
     container_name: ai_postgres
     restart: always
-    environment:
-      POSTGRES_DB: ai_db
-      POSTGRES_USER: ai_user
-      POSTGRES_PASSWORD: strongpassword
+    env_file:
+      - .env
     volumes:
       - pg_data:/var/lib/postgresql/data
-    ports:
-      - "5433:5432"
 
   ai_code:
     build: .
@@ -86,12 +83,6 @@ services:
     depends_on:
       - postgres
       - ollama
-    environment:
-      DB_NAME: ai_db
-      DB_USER: ai_user
-      DB_PASSWORD: strongpassword
-      DB_HOST: postgres
-      DB_PORT: 5432
     volumes:
       - .:/app
 
@@ -106,4 +97,43 @@ volumes:
   pg_data:
   ollama_data:
 EOF
+```
+
+## Erstelle envirnment
+```bash
+cat <<'EOF' > .env
+DEBUG=False
+SECRET_KEY=change_this_secret_key
+
+POSTGRES_DB=ai_db
+POSTGRES_USER=ai_user
+POSTGRES_PASSWORD=password
+POSTGRES_HOST=postgres
+POSTGRES_PORT=5432
+
+OLLAMA_BASE_URL=http://ollama:11434
+OLLAMA_MODEL=deepseek-coder:6.7b
+EOF
+```
+
+## Alles sauber starten
+```bash
+sudo docker compose down -v
+sudo docker compose up --build -d
+```
+
+## Migration ausführen
+
+
+## Teste Ollama Container 
+Interner Test
+```bash
+docker exec -it ai_ollama ollama pull deepseek-coder:6.7b
+```
+
+Terminal Test
+```bash
+curl -X POST http://192.168.178.98:8003/api/code/generate/ \
+-H "Content-Type: application/json" \
+-d '{"prompt":"write a python function that adds two numbers","mode":"generate"}'
 ```
