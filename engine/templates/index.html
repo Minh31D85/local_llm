@@ -8,22 +8,34 @@
     </head>
 
     <body>
-        <div class="container">
-            <h1>Local Coding Engine</h1>
-            <textarea id="prompt" placeholder="the function you need..."></textarea>
+        <div class="layout">
+            <div class="history" id="history"></div>
+                <div class="container">
+                    <h1>Local Coding Engine</h1>
+                    <div class="textarea-wrapper">
+                        <textarea id="prompt" placeholder="the function you need..."></textarea>
+                        <button id="clearBtn" class="clear-btn" aria-label="Clear">
+                            <svg viewBox="0 0 24 24" width="16" height="16">
+                                <path d="M6 6 L18 18 M18 6 L6 18" 
+                                    stroke="currentColor" 
+                                    stroke-width="2" 
+                                    stroke-linecap="round"/>
+                            </svg>
+                        </button>
+                    </div>
+                    
 
-            <div class="controls">
-                <select id="language">
-                    <option value="python">Python</option>
-                    <option value="javascript">JS</option>
-                    <option value="typescript">TS</option>
-                    <option value="csharp">C#</option>
-                </select>
+                    <select id="mode">
+                        <option value="generate">Generate</option>
+                        <option value="analyze">Analyze</option>
+                    </select>
 
-                <button id="generateBtn">Generate</button>
-            </div>
-            <div class="loader" id="loader">Generating...</div>
-            <pre id="output"></pre>
+                    <div class="controls">  
+                        <button id="generateBtn">Send</button>
+                    </div>
+                    <div class="loader" id="loader">Generating...</div>
+                    <pre id="output"></pre>
+                </div>    
         </div>
         <script src="{% static 'app.js' %}"></script>
     </body>
