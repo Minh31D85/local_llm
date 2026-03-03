@@ -14,8 +14,16 @@ from pathlib import Path
 from dotenv import load_dotenv
 import os
 
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+
+
+# ------------------------------------------------------------
+# UMGEBUNGSVARIABLEN LADEN
+# ------------------------------------------------------------
+# Lädt Variablen aus .env Datei ins Environment
+load_dotenv()
 
 
 # Quick-start development settings - unsuitable for production
@@ -67,13 +75,6 @@ STATIC_ROOT = BASE_DIR / "staticfiles"
 # - Aktiviert Cache-Busting
 STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
-
-
-# ------------------------------------------------------------
-# UMGEBUNGSVARIABLEN LADEN
-# ------------------------------------------------------------
-# Lädt Variablen aus .env Datei ins Environment
-load_dotenv()
 
 # Application definition
 
