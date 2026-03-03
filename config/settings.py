@@ -167,6 +167,13 @@ USE_I18N = True
 
 USE_TZ = True
 
+REST_FRAMEWORK = {
+    "DEFAULT_AUTHENTICATION_CLASSES": [],
+    "DEFAULT_PERMISSION_CLASSES": [
+        "rest_framework.permissions.AllowAny",
+    ],
+}
+
 
 # Ollama 
 OLLAMA_BASE_URL = os.getenv("OLLAMA_BASE_URL")

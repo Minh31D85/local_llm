@@ -1,14 +1,20 @@
 from django.shortcuts import render
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
 from rest_framework import status
+
+from django.views.decorators.csrf import csrf_exempt
+from rest_framework.permissions import AllowAny
+
 from .services.llm import OllamaService
 from .promp_builder import build_prompts
 from .models import LLMRequest
 
 serv = OllamaService()
 
+@csrf_exempt
 @api_view(["POST"])
+@permission_classes([AllowAny])
 def generate_code(request):
     prompt = request.data.get("prompt")
     mode = request.data.get("mode")

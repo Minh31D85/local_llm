@@ -157,5 +157,9 @@ curl -X POST http://192.168.178.98:8003/api/code/generate/ \
 -d '{"prompt":"write a python function that adds two numbers","mode":"generate"}'
 ```
 
+
+sudo docker compose logs -f 
+
+
 ## Gui aufrufen 
 http://127.0.0.1:8000/api/code/
