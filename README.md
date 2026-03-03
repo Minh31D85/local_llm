@@ -160,6 +160,9 @@ curl -X POST http://192.168.178.98:8003/api/code/generate/ \
 
 sudo docker compose logs -f 
 
+sudo docker exec -it ai_code python
+import requests
+print(requests.get("http://ollama:11434/api/tags").json())
 
 ## Gui aufrufen 
 http://127.0.0.1:8000/api/code/
