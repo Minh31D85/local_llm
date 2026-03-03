@@ -23,12 +23,33 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.getenv("SECRET_KEY")
+if not SECRET_KEY:
+    raise ValueError("SECRET_KEY fehlt")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.getenv("DEBUG") == "True"
 
-ALLOWED_HOSTS = []
 
+# ------------------------------------------------------------
+# HOST KONFIGURATION
+# ------------------------------------------------------------
+# Erlaubte Hostnamen für HTTP Requests, Schutz gegen Host Header Angriffe
+hosts = os.getenv("ALLOWED_HOSTS", "")
+ALLOWED_HOSTS = [h.strip() for h in hosts.split(",") if h.strip()]
+
+
+# ------------------------------------------------------------
+# CSRF KONFIGURATION
+# ------------------------------------------------------------
+csrf = os.getenv("CSRF_TRUSTED_ORIGINS", "")
+CSRF_TRUSTED_ORIGINS = [c.strip() for c in csrf.split(",") if c.strip()]
+
+
+# ------------------------------------------------------------
+# CORS KONFIGURATION
+# ------------------------------------------------------------
+origins = os.getenv("CORS_ALLOWED_ORIGINS","")
+CORS_ALLOWED_ORIGINS = [o.strip() for o in origins.split(",") if o.strip()]
 
 
 # ------------------------------------------------------------
@@ -57,6 +78,8 @@ load_dotenv()
 # Application definition
 
 INSTALLED_APPS = [
+    'corsheaders',
+    'rest_framework',
     'engine',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -67,6 +90,7 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',

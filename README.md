@@ -26,8 +26,7 @@ listet alle Model auf
 
 ollama pull deepseek-coder:6.7b
 
-## Gui aufrufen 
-http://127.0.0.1:8000/api/code/
+
 
 
 ## Erstelle Dockerfile
@@ -142,8 +141,14 @@ sudo docker exec -it ai_ollama ollama pull deepseek-coder:6.7b
 ## Teste Ollama Container 
 Interner Test
 ```bash
-sudo docker exec -it ai_ollama ollama pull deepseek-coder:6.7b
+sudo docker exec -it ai_ollama ollama run deepseek-coder:6.7b
 ```
+Füge das hinzu:
+```bash
+Write a hello world in Python
+```
+Mit Ctrl+D beenden.
+
 
 Terminal Test
 ```bash
@@ -151,3 +156,6 @@ curl -X POST http://192.168.178.98:8003/api/code/generate/ \
 -H "Content-Type: application/json" \
 -d '{"prompt":"write a python function that adds two numbers","mode":"generate"}'
 ```
+
+## Gui aufrufen 
+http://127.0.0.1:8000/api/code/
