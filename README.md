@@ -37,20 +37,30 @@ FROM python:3.12-slim
 ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1
 
+# uv Stabilitätsfix für ZFS / TrueNAS
+ENV UV_LINK_MODE=copy
+ENV UV_CONCURRENT_INSTALLS=1
+
 WORKDIR /app
 
-COPY pyproject.toml .
+# uv installieren
+RUN pip install --no-cache-dir uv
 
-RUN pip install --upgrade pip \
-    && pip install .
+# Dependency Dateien zuerst kopieren (Docker cache)
+COPY pyproject.toml uv.lock ./
 
+# Dependencies installieren
+RUN uv pip install --system .
+
+# restlichen Code kopieren
 COPY . .
 
+# static files sammeln
 RUN python manage.py collectstatic --noinput
 
 EXPOSE 8000
 
-CMD ["gunicorn", "config.wsgi:application", "--bind", "0.0.0.0:8000"]
+CMD ["gunicorn", "config.wsgi:application", "--bind", "0.0.0.0:8000", "--workers", "3"]
 EOF
 ```
 
@@ -82,13 +92,13 @@ services:
     depends_on:
       - postgres
       - ollama
-    volumes:
-      - .:/app
 
   ollama:
     image: ollama/ollama
     container_name: ai_ollama
     restart: always
+    ports:
+      - "11434:11434"
     volumes:
       - ollama_data:/root/.ollama
 
@@ -102,13 +112,13 @@ EOF
 ```bash
 cat <<'EOF' > .env
 DEBUG=False
-SECRET_KEY=secret_key
+SECRET_KEY=*prdp2tohumc*-94@n72sm90w+lf%ffcz*b&ro7ak69nalyh
 
-DB_NAMEai_db
+DB_NAME=ai_db
 DB_USER=ai_user
 DB_PASSWORD=password
 DB_HOST=postgres
-DB_PORT5432
+DB_PORT=5432
 
 # Für den Postgres Container
 POSTGRES_DB=ai_db
@@ -116,7 +126,10 @@ POSTGRES_USER=ai_user
 POSTGRES_PASSWORD=password
 
 OLLAMA_BASE_URL=http://ollama:11434
-OLLAMA_MODEL=deepseek-coder:6.7b
+
+ALLOWED_HOST=127.0.0.1,localhost,HOST_IP
+CORS_ALLOWED_ORIGINS=http://localhost:5173,http://HOST_IP:5173
+CSRF_TRUSTED_ORIGINS=http://HOST_IP:HOST_PORT
 EOF
 ```
 
@@ -136,6 +149,8 @@ sudo docker exec -it ai_code python manage.py migrate
 ## Model laden
 ```bash
 sudo docker exec -it ai_ollama ollama pull deepseek-coder:6.7b
+sudo docker exec -it ai_ollama ollama pull mixtral:8x7b
+sudo docker exec -it ai_ollama ollama pull llama3:8b
 ```
 
 ## Teste Ollama Container 

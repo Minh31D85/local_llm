@@ -67,6 +67,7 @@ async function generate() {
         }
 
         output.textContent = data.response;
+        Prism.hightlightElement(output);
 
         if(promptField) promptField.value = "";
         
@@ -122,7 +123,10 @@ async function loadHistory() {
             const outputField = document.getElementById("output");
 
             if(promptField)promptField.value = entry.prompt;
-            if(outputField)outputField.textContent = entry.response;
+            if(outputField){
+                outputField.textContent = entry.response;
+                Prism.highlightElement(outputField);
+            }
         }
         container.appendChild(div);
     })

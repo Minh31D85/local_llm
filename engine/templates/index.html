@@ -5,6 +5,7 @@
         <meta charset="UTF-8">
         <title>AI Code Engine</title>
         <link rel="stylesheet" href="{% static 'style.css' %}">
+        <link href="{% static 'prism/prism.css' %}" rel="stylesheet">
     </head>
 
     <body>
@@ -31,6 +32,7 @@
                     <pre id="output"></pre>
                 </div>    
         </div>
+        <script src="{% static 'prism/prism.js' %}"></script>
         <script src="{% static 'app.js' %}"></script>
     </body>
 </html>
