@@ -1,18 +1,33 @@
 import requests
 from django.conf import settings
+from requests.adapters import HTTPAdapter
+
 
 class OllamaService:
-    def generate(self, system_prompt: str, user_prompt: str):
+    def __init__(self):
+        self.base_url = settings.OLLAMA_BASE_URL
+        self.session = requests.Session()
+
+        adapter = HTTPAdapter(
+            pool_connections=10,
+            pool_maxsize=20
+        )
+
+        self.session.mount("http://", adapter)
+        self.session.mount("https://", adapter)
+
+
+    def generate(self, model: str, system_prompt: str, user_prompt: str):
         try:
-            response = requests.post(
-                f"{settings.OLLAMA_BASE_URL}/api/generate",
+            response = self.session.post(
+                f"{self.base_url}/api/generate",
                 json={
-                    "model": settings.OLLAMA_MODEL,
+                    "model": model,
                     "system": system_prompt,
                     "prompt": user_prompt,
                     "stream": False
                 },
-                timeout=120
+                timeout=300
             )
 
             response.raise_for_status()

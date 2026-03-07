@@ -175,6 +175,9 @@ REST_FRAMEWORK = {
 }
 
 
-# Ollama 
+# ------------------------------------------------------------
+# OLLAMA KONFIGURATION
+# ------------------------------------------------------------
 OLLAMA_BASE_URL = os.getenv("OLLAMA_BASE_URL")
-OLLAMA_MODEL = os.getenv("OLLAMA_MODEL")
+if not OLLAMA_BASE_URL:
+    raise ValueError("OLLAMA_BASE_URL fehlt in .env")

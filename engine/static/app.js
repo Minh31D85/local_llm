@@ -37,7 +37,6 @@ document.addEventListener("DOMContentLoaded", () => {
 async function generate() {
     const promptField = document.getElementById("prompt");
     const prompt = promptField?.value || "";
-    const mode = document.getElementById("mode").value;
     const loader = document.getElementById("loader");
     const output = document.getElementById("output");
     const generateBtn = document.getElementById("generateBtn");
@@ -57,25 +56,20 @@ async function generate() {
             headers:{
                 "Content-Type": "application/json"
             },
-            body: JSON.stringify({ prompt, mode })
+            body: JSON.stringify({ prompt })
         });
 
-        const text = await response.text();
-
-        let data;
-        try{
-            data = JSON.parse(text);
-        }catch{
-            throw new Error("Invalid JSON response");
-        }
+        const data = await response.text();
 
         if(!response.ok){
             output.textContent = data.error || "Server error";
             return;
         }
 
-        output.textContent = data.code
+        output.textContent = data.response;
+
         if(promptField) promptField.value = "";
+        
         loadHistory();
     }catch(err){
         if(output) output.textContent = "Connection error";
@@ -126,11 +120,9 @@ async function loadHistory() {
             if(e.target === delBtn) return;
             const promptField = document.getElementById("prompt");
             const outputField = document.getElementById("output");
-            const modeField = document.getElementById("mode");
 
             if(promptField)promptField.value = entry.prompt;
             if(outputField)outputField.textContent = entry.response;
-            if(modeField)modeField.value = entry.mode;
         }
         container.appendChild(div);
     })
@@ -142,7 +134,10 @@ async function deleteEntry(id) {
         const response = await fetch(`/api/code/history/${id}/`, {
             method: "DELETE"
         });
-        if(!response.ok) console.error("Delete failed");
+        if(!response.ok){
+            console.error("Delete failed");
+            alert("Delete failed");
+        }    
     }catch(err){
         console.error("Connection error")
     }

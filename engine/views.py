@@ -3,16 +3,16 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
 
-from .services.llm import OllamaService
-from .promp_builder import build_prompts
+from .llm.router import LLMRouter
+from .prompt_builder import build_prompts
 from .models import LLMRequest
 
-serv = OllamaService()
+router = LLMRouter()
+
 
 @api_view(["POST"])
 def generate_code(request):
     prompt = request.data.get("prompt")
-    mode = request.data.get("mode")
 
     if not prompt or not prompt.strip():
         return Response({"error": "Prompt is required"}, status=status.HTTP_400_BAD_REQUEST)
@@ -21,11 +21,11 @@ def generate_code(request):
         return Response({"error": "Prompt too long"}, status=status.HTTP_400_BAD_REQUEST)
     
     try:
-        system_prompt, user_prompt = build_prompts(mode, prompt)
+        system_prompt, user_prompt = build_prompts(prompt)
     except ValueError as e:
         return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
     
-    result = serv.generate(system_prompt, user_prompt)
+    model, result = router.generate(system_prompt, user_prompt)
 
     if not isinstance(result,str):
         return Response({"error": "Invalid LLM response"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
@@ -34,16 +34,17 @@ def generate_code(request):
         return Response({"error": result}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
     db_entry = LLMRequest.objects.create(
-        mode=mode,
-        language="auto",
         prompt=prompt,
+        model=model,
         response = result
     )
 
     return Response({
         "id": db_entry.id,
-        "code": result
+        "model": model,
+        "response": result
         })
+
 
 
 @api_view(["GET"])
@@ -53,9 +54,8 @@ def history(request):
     data = [
         {
             "id": e.id,
-            "mode": e.mode,
-            "language": e.language,
             "prompt": e.prompt,
+            "model": e.model, 
             "response": e.response,
             "created_at": e.created_at
         }
