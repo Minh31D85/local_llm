@@ -29,10 +29,12 @@
                         <button id="generateBtn">Send</button>
                     </div>
                     <div class="loader" id="loader">Generating... 0.0s | tokens: 0</div>
+                    <div id="analysis"></div>
                     <pre id="output"><code id="output-code" class="language-plaintext"></code></pre>
                 </div>    
         </div>
         <script src="{% static 'prism/prism.js' %}"></script>
+        <script src="{% static 'mark/marked.min.js' %}"></script>
         <script src="{% static 'app.js' %}"></script>
     </body>
 </html>

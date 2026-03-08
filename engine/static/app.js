@@ -38,12 +38,14 @@ async function generate() {
     const loader = document.getElementById("loader");
     const codeElement = document.getElementById("output-code");
     const generateBtn = document.getElementById("generateBtn");
+    const analysisElement = document.getElementById("analysis")
 
     const prompt = promptField?.value || "";
     if(!prompt.trim()){ alert("Prompt required"); return; }
 
     tokenCount = 0;
     codeElement.textContent = "";
+    analysisElement.innerHTML = "";
 
     loader.style.display = "block";
     generateBtn.disabled = true;
@@ -81,7 +83,10 @@ async function generate() {
 
             tokenCount += chunk.split(/\s+/).length;
         }   
-        const parsed = extractCodeBlock(fullText)
+
+        const parsed = parseLLMRes(fullText);
+
+        analysisElement.innerHTML = marked.parsed(parsed.analysis)
 
         applyLanguage(parsed.lang);
 
@@ -90,6 +95,7 @@ async function generate() {
         Prism.highlightElement(codeElement);
 
         promptField.value = "";
+
         loadHistory();
     }catch(err){
         if(codeElement) codeElement.textContent = "Connection error";
@@ -190,19 +196,22 @@ function stopTimer(loader){
 }
 
 
-function extractCodeBlock(text){
+function parseLLMRes(text){
     const match = text.match(/```(\w+)?\n([\s\S]*?)```/);
     
     if(!match){
         return { 
-            lang: "plaintext", 
-            code: text
+            analysis: "text", 
+            code: "",
+            lang: "plaintext"
         };
     }  
-    return { 
-        lang: match[1] || "plaintext", 
-        code: match[2]
-    };
+
+    const code = codeMatch[2];
+    const lang = codeMatch[1] || "plaintext";
+    
+    const analysis = text.replace(codeMatch[0], "");
+    return { analysis, code, lang };
 }
 
 function applyLanguage(lang){
