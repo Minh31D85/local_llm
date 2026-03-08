@@ -10,6 +10,7 @@
 /* ================= BODY ================= */
 
 body {
+    background-color: var(--bg-main);
     font-family:
         system-ui,
         -apple-system,
@@ -18,13 +19,9 @@ body {
         "Helvetica Neue",
         Arial,
         sans-serif;
-
     font-weight: 400;
-
-    color: #eaeaea;
-
+    color: var(--text-main);
     text-rendering: optimizeLegibility;
-
     -webkit-font-smoothing: antialiased;
 }
 
@@ -234,14 +231,21 @@ h1 {
     letter-spacing: 0.2px;
 }
 
+#output pre {
+    margin: 0;
+}
+
 #output code {
+    display: block;
+    white-space: pre;
     font-family:
         "JetBrains Mono",
         "Fira Code",
         Consolas,
         monospace;
-    font-size: clamp(15px, 1vw, 17px);
-    line-height: 1.6;
+
+    font-size: 16px;
+    line-height: 1.7;
 }
 
 /* Hover highlight */
@@ -276,4 +280,22 @@ h1 {
     .container {
         order: 1;
     }
+}
+
+/* ===== PRISM FIX ===== */
+
+pre[class*="language-"] {
+    background: #0f0f0f !important;
+    padding: 28px;
+    margin: 0;
+}
+
+code[class*="language-"] {
+    background: none !important;
+    text-shadow: none !important;
+}
+
+/* Tokens ohne Background */
+.token {
+    background: none !important;
 }
