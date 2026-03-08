@@ -80,6 +80,7 @@ async function generate() {
             tokenCount += chunk.split(/\s+/).length;
         }   
 
+        console.log(fullText);
         const parsed = extractCodeBlock(fullText)
 
         applyLanguage(parsed.lang);
@@ -192,9 +193,16 @@ function stopTimer(loader){
 function extractCodeBlock(text){
     const match = text.match(/```(\w+)?\n([\s\S]*?)```/);
     
-    if(!match) return { lang: "plaintext", code: text};
-
-    return { lang: match[1] || "plaintext", code: match[2]}
+    if(!match){
+        return { 
+            lang: "plaintext", 
+            code: text
+        };
+    }  
+    return { 
+        lang: match[1] || "plaintext", 
+        code: match[2]
+    };
 }
 
 function applyLanguage(lang){
