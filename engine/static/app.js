@@ -23,33 +23,31 @@ document.addEventListener("DOMContentLoaded", () => {
         promptField.addEventListener("input", toggleVisibility);
 
         clearBtn.addEventListener("click", () => {
-            input.value = "";
+            promptField.value = "";
             promptField.focus();
             toggleVisibility();
         })
         toggleVisibility();
     }
-
     loadHistory();
 })
 
 
 async function generate() {
     const promptField = document.getElementById("prompt");
-    const prompt = promptField?.value || "";
     const loader = document.getElementById("loader");
     const output = document.getElementById("output");
     const generateBtn = document.getElementById("generateBtn");
 
-    if(!prompt.trim()){
-        alert("Prompt required");
-        return;
-    }
+    const prompt = promptField?.value || "";
+    if(!prompt.trim()){ alert("Prompt required"); return; }
 
+    tokenCount = 0;
+    output.textContent = "";
+
+    loader.style.display = "block";
+    generateBtn.disabled = true;
     startTimer(loader);
-
-    if(output) output.textContent = "";
-    if(generateBtn)generateBtn.disabled = true;
 
     try{
         const response = await fetch("/api/code/generate/", {
@@ -60,18 +58,24 @@ async function generate() {
             body: JSON.stringify({ prompt })
         });
 
-        const data = await response.text();
-
         if(!response.ok){
-            output.textContent = data.error || "Server error";
+            output.textContent = "Server error";
             return;
         }
 
-        output.textContent = data.response;
-        Prism.hightlightElement(output);
+        const reader = response.body.getReader();
+        const decoder = new TextDecoder();
 
-        if(promptField) promptField.value = "";
-        
+        while(true){
+            const {done, value} = await reader.read();
+            if(done) break;
+
+            const chunk = decoder.decode(value);
+            output.textContent += chunk;
+            tokenCount += chunk.split(/\s+/).length;
+        }   
+        Prism.highlightElement(output);
+        promptField.value = "";
         loadHistory();
     }catch(err){
         if(output) output.textContent = "Connection error";
@@ -80,6 +84,7 @@ async function generate() {
         if(generateBtn) generateBtn.disabled = false;
     }
 }
+
 
 
 async function loadHistory() {
@@ -134,6 +139,7 @@ async function loadHistory() {
 }
 
 
+
 async function deleteEntry(id) {
     try{
         const response = await fetch(`/api/code/history/${id}/`, {
@@ -149,16 +155,16 @@ async function deleteEntry(id) {
 }
 
 
+
 let timerInterval = null;
+let tokenCount = 0;
 
 function startTimer(loader){
     const startTime = Date.now();
 
-    loader.style.display = "block";
-
     timerInterval = setInterval(() => {
         const elapsed = (Date.now() - startTime) / 1000;
-        loader.textContent = `Generating.. ${elapsed.toFixed(1)}s`;
+        loader.textContent = `Generating.. ${elapsed.toFixed(1)}s | tokens: ${tokenCount}`;
     }, 100);
 }
 
