@@ -10,7 +10,7 @@
 /* ================= BODY ================= */
 
 body {
-    background-color: var(--bg-main);
+    background: var(--bg-main);
     font-family:
         system-ui,
         -apple-system,
@@ -19,8 +19,8 @@ body {
         "Helvetica Neue",
         Arial,
         sans-serif;
-    font-weight: 400;
     color: var(--text-main);
+    font-weight: 400;
     text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;
 }
@@ -99,8 +99,9 @@ body {
 /* ================= MAIN CONTAINER ================= */
 
 .container {
-    width: 100%;
-    max-width: 1400px;
+    background: var(--bg-main);
+    padding: 20px;
+    border-radius: 8px;
 }
 
 /* ================= TYPOGRAPHY ================= */
@@ -215,20 +216,22 @@ h1 {
 /* ================= OUTPUT ================= */
 
 #output {
-    background: #0f0f0f;
-    border: 1px solid #333;
+    background: var(--bg-surface);
+    border: 1px solid var(--border);
     padding: 28px;
     border-radius: 8px;
     overflow-x: auto;
 }
 
 #analysis {
+    background: var(--bg-surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 24px;
     margin: 20px 0;
-    font-size: clamp(18px, 1.2vw, 22px);
+    font-size: 16px;
     line-height: 1.7;
-    color: #f1f1f1;
-    font-weight: 400;
-    letter-spacing: 0.2px;
+    color: var(--text-main);
 }
 
 #output pre {
@@ -243,23 +246,17 @@ h1 {
         "Fira Code",
         Consolas,
         monospace;
-
-    font-size: 16px;
+    font-size: 15px;
     line-height: 1.7;
+    color: #ffffff;
 }
 
-/* Hover highlight */
-#output code:hover {
-    background: rgba(255,255,255,0.03);
-}
-
-/* Scrollbar */
 #output::-webkit-scrollbar {
     height: 8px;
 }
 
 #output::-webkit-scrollbar-thumb {
-    background: #444;
+    background: #333;
 }
 
 /* ================= MOBILE BREAKPOINT ================= */
@@ -282,20 +279,20 @@ h1 {
     }
 }
 
-/* ===== PRISM FIX ===== */
+/* ===== PRISM RESET ===== */
 
 pre[class*="language-"] {
-    background: #0f0f0f !important;
-    padding: 28px;
+    background: var(--bg-surface) !important;
+    padding: 0;
     margin: 0;
 }
 
 code[class*="language-"] {
     background: none !important;
     text-shadow: none !important;
+    color: #ffffff !important;
 }
 
-/* Tokens ohne Background */
 .token {
     background: none !important;
 }
