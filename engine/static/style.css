@@ -210,7 +210,7 @@ h1 {
     background: #111;
     border: 1px solid #333;
 
-    padding: clamp(18px, 2vw, 26px);
+    padding: clamp(20px, 2vw, 32px);
 
     font-family:
         "JetBrains Mono",
@@ -218,19 +218,27 @@ h1 {
         "Source Code Pro",
         monospace;
 
-    line-height: 1.6;
+    font-size: clamp(16px, 1.1vw, 20px);
+
+    line-height: 1.7;
 
     overflow-x: auto;
 
     max-height: 70vh;
 }
 
-#output code:hover {
+/* Code block */
+#output code {
     display: block;
     min-width: max-content;
+}
+
+/* Hover highlight */
+#output code:hover {
     background: rgba(255,255,255,0.03);
 }
 
+/* Scrollbar */
 #output::-webkit-scrollbar {
     height: 8px;
 }
