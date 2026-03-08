@@ -1,10 +1,8 @@
 document.addEventListener("DOMContentLoaded", () => {
-    const promptField = document.getElementById("prompt");
-    const generateBtn = document.getElementById("generateBtn");
-    const clearBtn = document.getElementById("clearBtn");
+    const ui = getUI();
 
-    if(promptField){
-            promptField.addEventListener("keydown", (e) => {
+    if(ui.prompt){
+            ui.prompt.addEventListener("keydown", (e) => {
                 if(e.key === "Enter" && !e.shiftKey && !e.repeat){
                     e.preventDefault();
                     generate();
@@ -12,19 +10,19 @@ document.addEventListener("DOMContentLoaded", () => {
             })
         }
 
-    if(generateBtn){ 
-        generateBtn.addEventListener("click", generate);
+    if(ui.generateBtn){ 
+        ui.generateBtn.addEventListener("click", generate);
     }
 
-    if(promptField && clearBtn){
+    if(ui.prompt && ui.clearBtn){
         const toggleVisibility = () => {
-            clearBtn.style.opacity = promptField.value.trim() ? "1" : "0";
+            ui.clearBtn.style.opacity = ui.prompt.value.trim() ? "1" : "0";
         }
-        promptField.addEventListener("input", toggleVisibility);
+        ui.prompt.addEventListener("input", toggleVisibility);
 
-        clearBtn.addEventListener("click", () => {
-            promptField.value = "";
-            promptField.focus();
+        ui.clearBtn.addEventListener("click", () => {
+            ui.prompt.value = "";
+            ui.prompt.focus();
             toggleVisibility();
         })
         toggleVisibility();
@@ -34,23 +32,16 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
 async function generate() {
-    const promptField = document.getElementById("prompt");
-    const loader = document.getElementById("loader");
-    const codeElement = document.getElementById("output-code");
-    const generateBtn = document.getElementById("generateBtn");
-    const analysisElement = document.getElementById("analysis")
+    const ui = getUI();
 
-    const prompt = promptField?.value || "";
-    if(!prompt.trim()){ alert("Prompt required"); return; }
+    const prompt = ui.prompt.value.trim();
+    if(!prompt){ 
+        alert("Prompt required"); 
+        return; 
+    }
 
-    tokenCount = 0;
-    codeElement.textContent = "";
-    analysisElement.innerHTML = "";
-
-    loader.style.display = "block";
-    generateBtn.disabled = true;
-    
-    startTimer(loader);
+    resetOutput(ui);
+    startTimer(ui.loader);
 
     let fullText = "";
 
@@ -64,7 +55,7 @@ async function generate() {
         });
 
         if(!response.ok){
-            codeElement.textContent = "Server error";
+            ui.codeElement.textContent = "Server error";
             return;
         }
 
@@ -79,30 +70,63 @@ async function generate() {
 
             fullText += chunk;
 
-            codeElement.textContent = fullText;
+            appendChunk(ui.codeElement, chunk);
 
-            tokenCount += chunk.split(/\s+/).length;
+            tokenCount += countToken(chunk);
         }   
 
         const parsed = parseLLMRes(fullText);
 
-        analysisElement.innerHTML = marked.parsed(parsed.analysis)
+        ui.analysisElement.innerHTML = marked.parse(parsed.analysis)
 
-        applyLanguage(parsed.lang);
+        applyLanguage(ui.codeElement, parsed.lang);
 
-        codeElement.textContent = parsed.code;
+        ui.codeElement.textContent = parsed.code;
 
-        Prism.highlightElement(codeElement);
+        Prism.highlightElement(ui.codeElement);
 
-        promptField.value = "";
+        ui.prompt.value = "";
 
         loadHistory();
     }catch(err){
-        if(codeElement) codeElement.textContent = "Connection error";
+        if(ui.codeElement) ui.codeElement.textContent = "Connection error";
     }finally{
-        stopTimer(loader);
-        if(generateBtn) generateBtn.disabled = false;
+        stopTimer(ui.loader);
+        if(ui.generateBtn) ui.generateBtn.disabled = false;
     }
+}
+
+
+function appendChunk(el, chunk){
+    el.textContent += chunk;
+}
+
+
+function countToken(text){
+    return text.trim().split(/\s+/).filter(Boolean).length;
+}
+
+
+function getUI(){
+    return {
+        prompt: document.getElementById("prompt"),
+        loader: document.getElementById("loader"),
+        codeElement:document.getElementById("output-code"),
+        generateBtn:document.getElementById("generateBtn"),
+        analysisElement:document.getElementById("analysis"),
+        clearBtn: document.getElementById("clearBtn")
+
+    }  
+}
+
+
+function resetOutput(ui){
+    tokenCount = 0;
+    ui.codeElement.textContent = "";
+    ui.analysisElement.innerHTML = "";
+
+    ui.loader.style.display = "block";
+    ui.generateBtn.disabled = true;
 }
 
 
@@ -174,7 +198,6 @@ async function deleteEntry(id) {
 }
 
 
-
 let timerInterval = null;
 let tokenCount = 0;
 
@@ -186,6 +209,7 @@ function startTimer(loader){
         loader.textContent = `Generating.. ${elapsed.toFixed(1)}s | tokens: ${tokenCount}`;
     }, 100);
 }
+
 
 function stopTimer(loader){
     if(timerInterval){
@@ -201,21 +225,21 @@ function parseLLMRes(text){
     
     if(!match){
         return { 
-            analysis: "text", 
+            analysis: text, 
             code: "",
             lang: "plaintext"
         };
     }  
 
-    const code = codeMatch[2];
-    const lang = codeMatch[1] || "plaintext";
+    const lang = match[1] || "plaintext";
+    const code = match[2];
     
-    const analysis = text.replace(codeMatch[0], "");
+    const analysis = text.replace(match[0], "").trim();
     return { analysis, code, lang };
 }
 
-function applyLanguage(lang){
-    const code = document.getElementById("output-code");
-    code.className = "";
-    code.classList.add("language-" + lang);
+
+function applyLanguage(codeElement, lang){
+    codeElement.className = "";
+    codeElement.classList.add("language-" + lang);
 }
