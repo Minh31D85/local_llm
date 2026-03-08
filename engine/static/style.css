@@ -212,7 +212,12 @@ h1 {
 
     padding: clamp(18px, 2vw, 26px);
 
-    font-size: clamp(14px, 1vw, 16px);
+    font-family:
+        "JetBrains Mono",
+        "Fira Code",
+        "Source Code Pro",
+        monospace;
+
     line-height: 1.6;
 
     overflow-x: auto;
@@ -220,9 +225,18 @@ h1 {
     max-height: 70vh;
 }
 
-#output code {
+#output code:hover {
     display: block;
     min-width: max-content;
+    background: rgba(255,255,255,0.03);
+}
+
+#output::-webkit-scrollbar {
+    height: 8px;
+}
+
+#output::-webkit-scrollbar-thumb {
+    background: #444;
 }
 
 /* ================= MOBILE BREAKPOINT ================= */
