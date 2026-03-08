@@ -22,6 +22,6 @@ MODEL_REGISTRY = {
 }
 
 CATEGORY_PATTERNS = {
-    "code": re.compile(r"traceback|exception|stack trace|\bdef\b|\bclass\b|\bimport\b|\bfunction\b|python|javascript|typescript"),
+    "code": re.compile(r"traceback|exception|stack trace|\bdef\b|\bclass\b|\bimport\b|\bfunction\b|python|javascript|typescript|csharp"),
     "analysis": re.compile(r"error|failed|warning|log|docker|yaml|json|nginx|config|deployment|server")
 }

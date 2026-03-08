@@ -1,18 +1,4 @@
-Wichtig für deine Django Engine
 
-Du brauchst:
-
-Modell installiert
-
-Server aktiv
-
-Du brauchst nicht zwingend ollama run.
-
-Für Backend Nutzung reicht:
-
-ollama serve
-
-und dein Django macht HTTP Calls.
 
 
 
@@ -178,12 +164,11 @@ curl -X POST http://192.168.178.98:8003/api/code/generate/ \
 -d '{"prompt":"write a python function that adds two numbers","mode":"generate"}'
 ```
 
-
+## Logs auslesen
+```bash
 sudo docker compose logs -f 
+```
 
-sudo docker exec -it ai_code python
-import requests
-print(requests.get("http://ollama:11434/api/tags").json())
 
 ## Gui aufrufen 
 http://127.0.0.1:8000/api/code/

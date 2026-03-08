@@ -46,7 +46,8 @@ async function generate() {
         return;
     }
 
-    if(loader) loader.style.display = "block";
+    startTimer(loader);
+
     if(output) output.textContent = "";
     if(generateBtn)generateBtn.disabled = true;
 
@@ -75,7 +76,7 @@ async function generate() {
     }catch(err){
         if(output) output.textContent = "Connection error";
     }finally{
-        if(loader) loader.style.display = "none"; 
+        stopTimer(loader);
         if(generateBtn) generateBtn.disabled = false;
     }
 }
@@ -145,4 +146,26 @@ async function deleteEntry(id) {
     }catch(err){
         console.error("Connection error")
     }
+}
+
+
+let timerInterval = null;
+
+function startTimer(loader){
+    const startTime = Date.now();
+
+    loader.style.display = "block";
+
+    timerInterval = setInterval(() => {
+        const elapsed = (Date.now() - startTime) / 1000;
+        loader.textContent = `Generating.. ${elapsed.toFixed(1)}s`;
+    }, 100);
+}
+
+function stopTimer(loader){
+    if(timerInterval){
+        clearInterval(timerInterval);
+        timerInterval = null;
+    }
+    loader.style.display = "none";
 }
