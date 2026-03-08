@@ -36,7 +36,7 @@ document.addEventListener("DOMContentLoaded", () => {
 async function generate() {
     const promptField = document.getElementById("prompt");
     const loader = document.getElementById("loader");
-    const codeElement = document.getElementById("output");
+    const codeElement = document.getElementById("output-code");
     const generateBtn = document.getElementById("generateBtn");
 
     const prompt = promptField?.value || "";
