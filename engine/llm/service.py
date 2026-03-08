@@ -28,7 +28,16 @@ class OllamaService:
                     "prompt": user_prompt,
                     "stream": True,
                     "options": {
-                        
+                        "temperature": 0.2,
+                        "top_p": 0.9,
+                        "num_predict": 400,
+                        "num_thread": 4,
+                        "stop": [
+                            "ANALYSIS",
+                            "SOLUTION",
+                            "IMPLEMENTATION",
+                            "IMPROVEMENTS"
+                        ]
                     }
                 },
                 stream=True,
