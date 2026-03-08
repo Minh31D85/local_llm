@@ -36,19 +36,21 @@ document.addEventListener("DOMContentLoaded", () => {
 async function generate() {
     const promptField = document.getElementById("prompt");
     const loader = document.getElementById("loader");
-    const output = document.getElementById("output");
+    const codeElement = document.getElementById("output");
     const generateBtn = document.getElementById("generateBtn");
 
     const prompt = promptField?.value || "";
     if(!prompt.trim()){ alert("Prompt required"); return; }
 
     tokenCount = 0;
-    output.textContent = "";
+    codeElement.textContent = "";
 
     loader.style.display = "block";
     generateBtn.disabled = true;
     
     startTimer(loader);
+
+    let fullText = "";
 
     try{
         const response = await fetch("/api/code/generate/", {
@@ -60,7 +62,7 @@ async function generate() {
         });
 
         if(!response.ok){
-            output.textContent = "Server error";
+            codeElement.textContent = "Server error";
             return;
         }
 
@@ -72,15 +74,24 @@ async function generate() {
             if(done) break;
 
             const chunk = decoder.decode(value);
-            output.textContent += chunk;
+
+            fullText += chunk;
+
             tokenCount += chunk.split(/\s+/).length;
-            Prism.highlightElement(output);
         }   
+
+        const parsed = extractCodeBlock(fullText)
+
+        applyLanguage(parsed.lang);
+
+        codeElement.textContent = parsed.code;
+
+        Prism.highlightElement(codeElement);
 
         promptField.value = "";
         loadHistory();
     }catch(err){
-        if(output) output.textContent = "Connection error";
+        if(codeElement) codeElement.textContent = "Connection error";
     }finally{
         stopTimer(loader);
         if(generateBtn) generateBtn.disabled = false;
@@ -175,4 +186,19 @@ function stopTimer(loader){
         timerInterval = null;
     }
     loader.style.display = "none";
+}
+
+
+function extractCodeBlock(text){
+    const match = text.match(/```(\w+)?\n([\s\S]*?)```/);
+    
+    if(!match) return { lang: "plaintext", code: text};
+
+    return { lang: match[1] || "plaintext", code: match[2]}
+}
+
+function applyLanguage(lang){
+    const code = document.getElementById("output-code");
+    code.className = "";
+    code.classList.add("language-" + lang);
 }
