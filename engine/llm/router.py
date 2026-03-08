@@ -1,5 +1,4 @@
-import re
-from .registry import MODEL_REGISTRY, DEFAULT_MODEL
+from .registry import MODEL_REGISTRY, DEFAULT_MODEL, CATEGORY_PATTERNS
 from .service import OllamaService
 
 
@@ -20,25 +19,25 @@ class LLMRouter:
     
     def _auto_select_model(self, prompt: str):
         text = prompt.lower()
-
         category = "general"
 
-        if re.search(r"traceback|execption|stack trace", text):
-            category = "code"
+        for name, pattern in CATEGORY_PATTERNS.items():
+            if pattern.search(text):
+                category = name
+                break
 
-        elif re.search(r"\bdef\b|\bclass\b|\bimport\b|\bfunction\b", text):
-            category = "code"
-        
-        elif re.search(r"error|failed|warning|log", text):
-            category = "analysis"
-
-        elif re.search(r"docker|yaml|json|nginx|config", text):
-            category = "analysis"
-
-        for model, data in MODEL_REGISTRY.items():
-            if data["type"] == category:
-                return model
+        candidates = [
+            (model, data)
+            for model, data in MODEL_REGISTRY.items()
+            if data["type"] == category
+        ]
+            
+        if not candidates: 
+            return DEFAULT_MODEL
    
-        return DEFAULT_MODEL
+        candidates.sort(key=lambda x: x[1]["priority"])
+        selected_model = candidates[0][0]
+
+        return selected_model
        
         

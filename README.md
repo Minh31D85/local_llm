@@ -59,12 +59,6 @@ cat <<'EOF' > docker-compose.yml
 version: "3.9"
 
 services:
-  command: >
-  gunicorn config.wsgi:application
-  --bind 0.0.0.0:8000
-  --workers 3
-  --timeout 300
-
   postgres:
     image: postgres:16
     container_name: ai_postgres
@@ -149,6 +143,7 @@ sudo docker exec -it ai_code python manage.py migrate
 sudo docker exec -it ai_ollama ollama pull deepseek-coder:6.7b
 sudo docker exec -it ai_ollama ollama pull mixtral:8x7b
 sudo docker exec -it ai_ollama ollama pull llama3:8b
+sudo docker exec -it ai_ollama ollama pull qwen2.5-coder:7b
 ```
 
 ## Prüfe ob Ollama läuft
