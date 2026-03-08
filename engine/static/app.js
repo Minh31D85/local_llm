@@ -77,10 +77,10 @@ async function generate() {
 
             fullText += chunk;
 
+            codeElement.textContent = fullText;
+
             tokenCount += chunk.split(/\s+/).length;
         }   
-
-        console.log(fullText);
         const parsed = extractCodeBlock(fullText)
 
         applyLanguage(parsed.lang);
@@ -139,7 +139,7 @@ async function loadHistory() {
         div.onclick = (e) => {
             if(e.target === delBtn) return;
             const promptField = document.getElementById("prompt");
-            const outputField = document.getElementById("output");
+            const outputField = document.getElementById("output-code");
 
             if(promptField)promptField.value = entry.prompt;
             if(outputField){
