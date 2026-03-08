@@ -10,11 +10,22 @@
 /* ================= BODY ================= */
 
 body {
-    background-color: var(--bg-main);
-    color: var(--text-main);
-    font-family: monospace;
-    margin: 0;
-    padding: clamp(20px, 4vw, 60px);
+    font-family:
+        system-ui,
+        -apple-system,
+        "Segoe UI",
+        Roboto,
+        "Helvetica Neue",
+        Arial,
+        sans-serif;
+
+    font-weight: 400;
+
+    color: #eaeaea;
+
+    text-rendering: optimizeLegibility;
+
+    -webkit-font-smoothing: antialiased;
 }
 
 /* ================= GRID LAYOUT ================= */
@@ -207,43 +218,30 @@ h1 {
 /* ================= OUTPUT ================= */
 
 #output {
-    background: #111;
+    background: #0f0f0f;
     border: 1px solid #333;
-
-    padding: clamp(20px, 2vw, 32px);
-    font-size: clamp(14px, 1vw, 18px);
-    font-family:
-        Arial,
-        "Segoe UI",
-        sans-serif;
-    line-height: 1.7;
+    padding: 28px;
+    border-radius: 8px;
     overflow-x: auto;
-    max-height: 70vh;
 }
 
-#analysis{
-    margin-top:20px;
-    margin-bottom:20px;
-    font-family:
-        Arial,
-        "Segoe UI",
-        sans-serif;
-
-    font-size:16px;
-    line-height:1.6;
-
-    color:#ddd;
+#analysis {
+    margin: 20px 0;
+    font-size: clamp(18px, 1.2vw, 22px);
+    line-height: 1.7;
+    color: #f1f1f1;
+    font-weight: 400;
+    letter-spacing: 0.2px;
 }
 
 #output code {
     font-family:
         "JetBrains Mono",
         "Fira Code",
+        Consolas,
         monospace;
-    display: block;
-    white-space: pre;
-    overflow-x: auto;
-    max-width: 100%;
+    font-size: clamp(15px, 1vw, 17px);
+    line-height: 1.6;
 }
 
 /* Hover highlight */
