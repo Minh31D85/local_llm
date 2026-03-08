@@ -74,8 +74,9 @@ async function generate() {
             const chunk = decoder.decode(value);
             output.textContent += chunk;
             tokenCount += chunk.split(/\s+/).length;
+            Prism.highlightElement(output);
         }   
-        Prism.highlightElement(output);
+
         promptField.value = "";
         loadHistory();
     }catch(err){
@@ -85,7 +86,6 @@ async function generate() {
         if(generateBtn) generateBtn.disabled = false;
     }
 }
-
 
 
 async function loadHistory() {

@@ -7,6 +7,7 @@ from django.http import StreamingHttpResponse
 from .llm.router import LLMRouter
 from .prompt_builder import build_prompts
 from .models import LLMRequest
+from .utils.output_cleaner import clean_output
 
 import json
 
@@ -86,6 +87,7 @@ def stream_and_store(prompt, model, stream):
             yield chunk
     finally:
         final_text = "".join(full_response).strip()
+        final_text = clean_output(final_text)
 
         if not final_text:
             return
