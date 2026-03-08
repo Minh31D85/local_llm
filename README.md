@@ -14,18 +14,6 @@ ollama serve
 
 und dein Django macht HTTP Calls.
 
-## Prüfe ob Ollama läuft
-Ollama besteht aus zwei Schichten:
-1. Server Prozess 
-2. Installierte Modellgewichte
-
-```bash
-ollama list
-```
-listet alle Model auf
-
-ollama pull deepseek-coder:6.7b
-
 
 
 
@@ -60,7 +48,7 @@ RUN python manage.py collectstatic --noinput
 
 EXPOSE 8000
 
-CMD ["gunicorn", "config.wsgi:application", "--bind", "0.0.0.0:8000", "--workers", "3"]
+CMD ["gunicorn", "config.wsgi:application", "--bind", "0.0.0.0:8000", "--workers", "3", "--timeout", "300", "--keep-alive", "5"]
 EOF
 ```
 
@@ -71,6 +59,11 @@ cat <<'EOF' > docker-compose.yml
 version: "3.9"
 
 services:
+  command: >
+  gunicorn config.wsgi:application
+  --bind 0.0.0.0:8000
+  --workers 3
+  --timeout 300
 
   postgres:
     image: postgres:16
@@ -153,6 +146,17 @@ sudo docker exec -it ai_ollama ollama pull mixtral:8x7b
 sudo docker exec -it ai_ollama ollama pull llama3:8b
 ```
 
+## Prüfe ob Ollama läuft
+Ollama besteht aus zwei Schichten:
+1. Server Prozess 
+2. Installierte Modellgewichte
+
+```bash
+ollama list
+```
+listet alle Model auf
+
+
 ## Teste Ollama Container 
 Interner Test
 ```bash
@@ -162,6 +166,8 @@ Füge das hinzu:
 ```bash
 Write a hello world in Python
 ```
+
+
 Mit Ctrl+D beenden.
 
 

@@ -25,7 +25,7 @@ class OllamaService:
                     "model": model,
                     "system": system_prompt,
                     "prompt": user_prompt,
-                    "stream": False
+                    "stream": True
                 },
                 timeout=300
             )
