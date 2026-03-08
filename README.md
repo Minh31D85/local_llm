@@ -172,3 +172,26 @@ sudo docker compose logs -f
 
 ## Gui aufrufen 
 http://127.0.0.1:8000/api/code/
+
+
+using System;
+
+class Program
+{
+    static void Main(string[] args)
+    {
+        Console.WriteLine("Enter a number:");
+
+        string input = Console.ReadLine();
+        int n = int.Parse(input);
+
+        int a = 0;
+
+        for (int i = 1; i <= n; i++)
+        {
+            a = a + i;
+        }
+
+        Console.WriteLine("Result: " + a);
+    }
+}

@@ -2,17 +2,21 @@ from django.shortcuts import render
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
+from django.http import StreamingHttpResponse
 
 from .llm.router import LLMRouter
 from .prompt_builder import build_prompts
 from .models import LLMRequest
+
+import json
 
 router = LLMRouter()
 
 
 @api_view(["POST"])
 def generate_code(request):
-    prompt = request.data.get("prompt")
+    body = json.loads(request.body)
+    prompt = body.get("prompt")
 
     if not prompt or not prompt.strip():
         return Response({"error": "Prompt is required"}, status=status.HTTP_400_BAD_REQUEST)
@@ -24,26 +28,22 @@ def generate_code(request):
         system_prompt, user_prompt = build_prompts(prompt)
     except ValueError as e:
         return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+ 
     
-    model, result = router.generate(system_prompt, user_prompt)
+    model, stream = router.stream(system_prompt, user_prompt)
 
-    if not isinstance(result,str):
-        return Response({"error": "Invalid LLM response"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+    wrapped_stream = stream_and_store(prompt, model, stream)
 
-    if result.startswith("LLM "):
-        return Response({"error": result}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-
-    db_entry = LLMRequest.objects.create(
-        prompt=prompt,
-        model=model,
-        response = result
+    response = StreamingHttpResponse(
+        wrapped_stream, 
+        content_type="text/plain"
     )
 
-    return Response({
-        "id": db_entry.id,
-        "model": model,
-        "response": result
-        })
+    response["Cache-Control"] = "no-cache"
+    response["X-Accel-Buffering"] = "no"
+
+    return response
+
 
 
 
@@ -76,3 +76,26 @@ def del_history_entry(request, entry_id):
 
 def index(request):
     return render(request, "index.html")
+
+
+def stream_and_store(prompt, model, stream):
+    full_response = []
+    try:
+        for chunk in stream:
+            full_response.append(chunk)
+            yield chunk
+    finally:
+        final_text = "".join(full_response).strip()
+
+        if not final_text:
+            return
+        
+        if final_text.startswith("LLM "):
+            return
+
+        LLMRequest.objects.create(
+            prompt=prompt,
+            model=model,
+            response=final_text
+        )
+

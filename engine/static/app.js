@@ -47,6 +47,7 @@ async function generate() {
 
     loader.style.display = "block";
     generateBtn.disabled = true;
+    
     startTimer(loader);
 
     try{

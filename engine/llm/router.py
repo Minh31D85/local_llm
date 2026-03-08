@@ -6,17 +6,18 @@ class LLMRouter:
     def __init__(self):
         self.service = OllamaService()
 
-    def generate(self, system_prompt: str, prompt: str):
+
+    def stream(self, system_prompt: str, prompt: str):
         model = self._auto_select_model(prompt)
 
-        response =  self.service.generate(
+        stream = self.service.generate(
             model=model,
             system_prompt=system_prompt,
             user_prompt=prompt
         )
-        
-        return model, response
-    
+        return model, stream
+
+
     def _auto_select_model(self, prompt: str):
         text = prompt.lower()
         category = "general"
