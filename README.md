@@ -13,44 +13,52 @@ Die Anwendung ermöglicht lokale Codegenerierung über eine API sowie eine einfa
 
 ## Features
 
-Lokale LLM Codegenerierung
+- **AI Engine**
+- lokale LLM Codegenerierung
+- Multi-Model Support
+- Streaming Responses
 
-Unterstützung mehrerer Modelle
+- **API**
+- REST API
+- JSON Requests
+- Docker Deployment
 
-deepseek-coder
-
-mixtral
-
-llama3
-
-qwen coder
-
-REST API für Codegenerierung
-
-Docker-basierte Installation
-
-PostgreSQL Datenbank
-
-Streamingfähige Antworten
-
-Web GUI
+- **Infrastruktur**
+- PostgreSQL Datenbank
+- Ollama LLM Server
+- uv Dependency Management
 
 
 ## Voraussetzungen
 
-Folgende Software wird benötigt:
+- **Folgende Software wird benötigt:**
+- Docker
+- Docker Compose
+- Linux / TrueNAS / Debian / Ubuntu Server
 
-Docker
+## Architektur
 
-Docker Compose
-
-Linux / TrueNAS / Debian / Ubuntu Server
+Frontend (GUI)
+      │
+      ▼
+Django REST API
+      │
+      ├── PostgreSQL
+      │
+      └── Ollama
+             │
+             └── LLM Models
 
 
 ## Environment Variablen
-SERVER_IP	= IP Adresse oder Hostname des Servers
-HOST_PORT	= Port unter dem der Server erreichbar ist
-SECRET_KEY = Sicherheitsschlüssel für Django. Muss frei gewählt werden und geheim bleiben. Darf nicht veröffentlicht werden
+- **SERVER_IP**	
+- IP Adresse oder Hostname des Servers
+
+- **HOST_PORT**
+- Port unter dem der Server erreichbar ist
+
+- **SECRET_KEY**  
+- Sicherheitsschlüssel für Django. Muss frei gewählt werden und geheim bleiben. Darf nicht veröffentlicht werden
 
 
 ## Erstelle Dockerfile
