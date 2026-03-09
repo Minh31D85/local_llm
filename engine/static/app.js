@@ -251,6 +251,7 @@ function parseLLMRes(text){
 
 
 function applyLanguage(codeElement, lang){
+console.log("APPLY_LANGUAGE")
     const map = {
         ts: "typescript",
         js: "javascript",
