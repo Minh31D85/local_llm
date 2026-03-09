@@ -1,6 +1,6 @@
-# AI Code
+# Local LLM
 
-Self-hosted **AI Code Generation Service** using local LLMs.
+Self-hosted **AI generation service** powered by local large language models (LLMs).
 
 Built with:
 
@@ -267,5 +267,6 @@ sudo docker compose logs -f
 ```bash
 http://HOST_IP:HOST_PORT/api/code/
 ```
+
 
 
