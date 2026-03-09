@@ -204,7 +204,9 @@ sudo docker compose down -v
 sudo docker compose up --build -d
 ```
 **-v** Additionally deletes all Docker volumes (e.g., database data).
+
 **--build** Rebuilds the Docker image before starting the containers.
+
 **-d** Starts the containers in the background (detached mode).
 
 ---
@@ -215,6 +217,7 @@ sudo docker exec -it ai_code python manage.py makemigrations
 sudo docker exec -it ai_code python manage.py migrate
 ```
 **makemigrations** analyzes changes in the Django models and creates migration files.
+
 **migrate** executes the created migrations in the database.
 
 ---
@@ -259,6 +262,7 @@ sudo docker compose logs -f
 
 ## Open web GUI
 http://HOST_IP:HOST_PORT/api/code/
+
 
 
 
