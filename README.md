@@ -66,7 +66,7 @@ Django REST API
 
 ---
 
-## Environment Variablen
+## Environment variables
 
 **HOST_IP**
 - IP address or hostname of the server
@@ -80,7 +80,7 @@ Django REST API
 
 ---
 
-## Erstelle Dockerfile
+## Create Dockerfile
 ```bash
 cat <<'EOF' > Dockerfile
 FROM python:3.12-slim
@@ -115,7 +115,9 @@ CMD ["gunicorn", "config.wsgi:application", "--bind", "0.0.0.0:8000", "--workers
 EOF
 ```
 
-## Erstelle eine docker compose 
+---
+
+## Create a docker compose
 
 ```bash
 cat <<'EOF' > docker-compose.yml
@@ -136,7 +138,7 @@ services:
     container_name: ai_code
     restart: always
     ports:
-      - "HOST_PORT:CONTAINER_PORT"
+      - "${HOST_PORT}:8000"
     env_file:
       - .env
     depends_on:
@@ -163,7 +165,9 @@ volumes:
 EOF
 ```
 
-## Erstelle envirnment
+---
+
+## Create environment
 ```bash
 cat <<'EOF' > .env
 DEBUG=False
@@ -188,20 +192,35 @@ CSRF_TRUSTED_ORIGINS=http://HOST_IP:HOST_PORT
 EOF
 ```
 
-## Alles sauber starten
+---
+
+## build and start
 ```bash
 sudo docker compose down -v
 sudo docker compose up --build -d
 ```
+-v
+Additionally deletes all Docker volumes (e.g., database data).
 
+--build
+Rebuilds the Docker image before starting the containers.
 
-## Migration ausführen
+-d
+Starts the containers in the background (detached mode).
+
+---
+
+## Execute migration
 ```bash
 sudo docker exec -it ai_code python manage.py makemigrations
 sudo docker exec -it ai_code python manage.py migrate
 ```
+makemigrations analyzes changes in the Django models and creates migration files.
+migrate executes the created migrations in the database.
 
-## Model laden
+---
+
+## Install Models
 ```bash
 sudo docker exec -it ai_ollama ollama pull deepseek-coder:6.7b
 sudo docker exec -it ai_ollama ollama pull mixtral:8x7b
@@ -209,34 +228,35 @@ sudo docker exec -it ai_ollama ollama pull llama3:8b
 sudo docker exec -it ai_ollama ollama pull qwen2.5-coder:7b
 ```
 
-## Prüfe ob Ollama läuft
-Ollama besteht aus zwei Schichten:
-1. Server Prozess 
-2. Installierte Modellgewichte
+---
 
+## List installed models
 ```bash
-ollama list
+sudo docker exec -it ai_ollama ollama list
 ```
-listet alle Model auf
 
+---
 
-## Teste Ollama Container 
-Interner Test
+## Test Ollama Container
+
+**Test whether the Ollama container is working correctly.**
 ```bash
 sudo docker exec -it ai_ollama ollama run deepseek-coder:6.7b
 ```
-Füge das hinzu:
+**When the model starts, enter the following prompt:**
 ```bash
 Write a hello world in Python
 ```
+**End with:**
+Press **Ctrl + D** to exit
 
-Mit Ctrl+D beenden.
 
+## View logs
 
-## Logs auslesen
+**Displays the logs of all containers.**
 ```bash
 sudo docker compose logs -f 
 ```
 
-## Gui aufrufen 
-http://SERVER_IP:HOST_IP/api/code/
+## Open web GUI
+http://HOST_IP:HOST_PORT/api/code/
