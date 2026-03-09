@@ -132,8 +132,9 @@ function resetOutput(ui){
 
 
 async function loadHistory() {
-    
+console.log("LOAD HISTORY CALLED");   
     const container = document.getElementById("history");
+console.log("Container:", container);
     if(!container) return;
     
     const response = await fetch("/api/code/history/");
