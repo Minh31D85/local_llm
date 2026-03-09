@@ -66,7 +66,7 @@ async function generate() {
             const {done, value} = await reader.read();
             if(done) break;
 
-            const chunk = decoder.decode(value);
+            const chunk = decoder.decode(value, {stream: true});
 
             fullText += chunk;
 
@@ -87,7 +87,8 @@ async function generate() {
 
         ui.prompt.value = "";
 
-        loadHistory();
+        await new Promise(resolve => setTimeout(resolve, 400));
+        await loadHistory();
     }catch(err){
         if(ui.codeElement) ui.codeElement.textContent = "Connection error";
     }finally{
@@ -131,12 +132,13 @@ function resetOutput(ui){
 
 
 async function loadHistory() {
+    
     const container = document.getElementById("history");
     if(!container) return;
     
     const response = await fetch("/api/code/history/");
     const data =  await response.json();
-
+console.log("History loaded", data);
     container.innerHTML = "";
 
     data.forEach(entry => {
@@ -196,6 +198,7 @@ async function deleteEntry(id) {
         console.error("Connection error")
     }
 }
+
 
 
 let timerInterval = null;
