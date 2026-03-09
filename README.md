@@ -82,7 +82,6 @@ Django REST API
 
 ## Create Dockerfile
 Copy and paste the following command into your terminal to create the Dockerfile.
-Make sure to adjust the configuration values according to your environment.
 ```bash
 cat <<'EOF' > Dockerfile
 FROM python:3.12-slim
@@ -265,4 +264,5 @@ sudo docker compose logs -f
 
 ## Open web GUI
 http://HOST_IP:HOST_PORT/api/code/
+
 
