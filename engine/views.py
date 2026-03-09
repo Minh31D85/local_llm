@@ -105,13 +105,11 @@ def stream_and_store(entry, stream):
         final_text = buffer.getvalue().strip()
         print("RAW OUTPUT:", final_text[:200])
 
-        final_text = clean_output(final_text)
+        # final_text = clean_output(final_text)
         print("CLEAN OUTPUT:", final_text[:200])
 
         if not final_text:
-            print("EMPTY OUTPUT -> deleting entry")
-            entry.delete()
-            return
+            final_text = "EMPTY RESPONSE"
         
         entry.response = final_text
         entry.save(update_fields=["response"])
