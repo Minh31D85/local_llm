@@ -1,15 +1,14 @@
 ### AI Code
+
 Self-hosted AI Code Generation Service basierend auf:
 
-Django / Django REST
+- **Django / Django REST** – Backend und API
+- **PostgreSQL** – Persistente Datenbank
+- **Ollama** – Lokale Large Language Models (LLMs)
+- **uv** – schneller Python Dependency Manager
+- **Docker / Docker Compose** – Containerisierte Infrastruktur
 
-PostgreSQL
-
-Ollama (lokale LLMs)
-
-Docker / Docker Compose
-
-Die Anwendung ermöglicht Codegenerierung über eine API und eine einfache Web-GUI.
+Die Anwendung ermöglicht lokale Codegenerierung über eine API sowie eine einfache Web-GUI.
 
 
 ## Features
