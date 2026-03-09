@@ -38,6 +38,7 @@ def generate_code(request):
         model=model,
         response=""
     )
+    print("ENTRY CREATED:", entry.id)
 
     wrapped_stream = stream_and_store(entry, stream)
 
@@ -57,7 +58,6 @@ def generate_code(request):
 @api_view(["GET"])
 def history(request):
     entries = LLMRequest.objects.order_by("-created_at")[:20]
-
     data = [
         {
             "id": e.id,
@@ -94,18 +94,24 @@ def stream_and_store(entry, stream):
             buffer.write(chunk)
             yield chunk
 
-    except Exception:
+    except Exception as e:
+        print("STREAM ERROR:", e)
         entry.delete()
         raise
 
     finally:
         final_text = buffer.getvalue().strip()
+        print("RAW OUTPUT:", final_text[:200])
+
         final_text = clean_output(final_text)
+        print("CLEAN OUTPUT:", final_text[:200])
 
         if not final_text:
+            print("EMPTY OUTPUT -> deleting entry")
             entry.delete()
             return
         
         entry.response = final_text
         entry.save(update_fields=["response"])
+        print("ENTRY SAVED:", entry.id)
 
