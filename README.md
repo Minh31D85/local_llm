@@ -52,14 +52,16 @@ Django REST API
 ```
 
 ## Environment Variablen
-**SERVER_IP**	
+
+**HOST_IP**
 - IP Adresse oder Hostname des Servers
 
 **HOST_PORT**
 - Port unter dem der Server erreichbar ist
 
-**SECRET_KEY**  
-- Sicherheitsschlüssel für Django. Muss frei gewählt werden und geheim bleiben. Darf nicht veröffentlicht werden
+**SECRET_KEY**
+- Sicherheitsschlüssel für Django.
+- Muss frei gewählt werden und geheim bleiben.n
 
 
 ## Erstelle Dockerfile
@@ -118,7 +120,7 @@ services:
     container_name: ai_code
     restart: always
     ports:
-      - "8003:8000"
+      - "HOST_PORT:CONTAINER_PORT"
     env_file:
       - .env
     depends_on:
@@ -149,7 +151,7 @@ EOF
 ```bash
 cat <<'EOF' > .env
 DEBUG=False
-SECRET_KEY=*prdp2tohumc*-94@n72sm90w+lf%ffcz*b&ro7ak69nalyh
+SECRET_KEY=CHANGE_ME
 
 DB_NAME=ai_db
 DB_USER=ai_user
@@ -212,22 +214,13 @@ Füge das hinzu:
 Write a hello world in Python
 ```
 
-
 Mit Ctrl+D beenden.
 
-
-Terminal Test
-```bash
-curl -X POST http://192.168.178.98:8003/api/code/generate/ \
--H "Content-Type: application/json" \
--d '{"prompt":"write a python function that adds two numbers","mode":"generate"}'
-```
 
 ## Logs auslesen
 ```bash
 sudo docker compose logs -f 
 ```
 
-
 ## Gui aufrufen 
-http://127.0.0.1:8000/api/code/
+http://SERVER_IP:HOST_IP/api/code/
