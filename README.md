@@ -266,10 +266,6 @@ sudo docker compose logs -f
 ## Open web GUI
 ```bash
 http://HOST_IP:HOST_PORT/api/code/
-``
-
-
-
-
+```
 
 
