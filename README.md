@@ -13,17 +13,17 @@ Die Anwendung ermöglicht lokale Codegenerierung über eine API sowie eine einfa
 
 ## Features
 
-- **AI Engine**
+**AI Engine**
 - lokale LLM Codegenerierung
 - Multi-Model Support
 - Streaming Responses
 
-- **API**
+**API**
 - REST API
 - JSON Requests
 - Docker Deployment
 
-- **Infrastruktur**
+**Infrastruktur**
 - PostgreSQL Datenbank
 - Ollama LLM Server
 - uv Dependency Management
@@ -31,13 +31,14 @@ Die Anwendung ermöglicht lokale Codegenerierung über eine API sowie eine einfa
 
 ## Voraussetzungen
 
-- **Folgende Software wird benötigt:**
+**Folgende Software wird benötigt:**
 - Docker
 - Docker Compose
 - Linux / TrueNAS / Debian / Ubuntu Server
 
 ## Architektur
 
+```text
 Frontend (GUI)
       │
       ▼
@@ -48,16 +49,16 @@ Django REST API
       └── Ollama
              │
              └── LLM Models
-
+```
 
 ## Environment Variablen
-- **SERVER_IP**	
+**SERVER_IP**	
 - IP Adresse oder Hostname des Servers
 
-- **HOST_PORT**
+**HOST_PORT**
 - Port unter dem der Server erreichbar ist
 
-- **SECRET_KEY**  
+**SECRET_KEY**  
 - Sicherheitsschlüssel für Django. Muss frei gewählt werden und geheim bleiben. Darf nicht veröffentlicht werden
 
 
