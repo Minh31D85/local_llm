@@ -1,6 +1,8 @@
 # AI Code
 
-Self-hosted AI Code Generation Service basierend auf:
+Self-hosted **AI Code Generation Service** using local LLMs.
+
+Built with:
 
 - **Django / Django REST** – Backend und API
 - **PostgreSQL** – Persistente Datenbank
@@ -8,33 +10,44 @@ Self-hosted AI Code Generation Service basierend auf:
 - **uv** – schneller Python Dependency Manager
 - **Docker / Docker Compose** – Containerisierte Infrastruktur
 
-Die Anwendung ermöglicht lokale Codegenerierung über eine API sowie eine einfache Web-GUI.
+The system allows **local code generation through an API or a simple web GUI**.
 
+---
+
+# Badges
+
+![Python](https://img.shields.io/badge/python-3.12-blue)
+![Docker](https://img.shields.io/badge/docker-supported-blue)
+![PostgreSQL](https://img.shields.io/badge/database-postgresql-blue)
+![License](https://img.shields.io/badge/license-MIT-green)
+
+---
 
 ## Features
 
 **AI Engine**
-- lokale LLM Codegenerierung
-- Multi-Model Support
-- Streaming Responses
+- Local LLM code generation
+- Multi-model support
+- Streaming responses
+
+**Supported models**
+- deepseek-coder
+- mixtral
+- llama3
+- qwen coder
 
 **API**
 - REST API
-- JSON Requests
-- Docker Deployment
+- JSON requests
+- Streaming output
 
-**Infrastruktur**
-- PostgreSQL Datenbank
-- Ollama LLM Server
-- uv Dependency Management
+**Infrastructure**
+- PostgreSQL database
+- Ollama LLM server
+- uv dependency management
+- Docker deployment
 
-
-## Voraussetzungen
-
-**Folgende Software wird benötigt:**
-- Docker
-- Docker Compose
-- Linux / TrueNAS / Debian / Ubuntu Server
+---
 
 ## Architektur
 
@@ -51,18 +64,21 @@ Django REST API
              └── LLM Models
 ```
 
+---
+
 ## Environment Variablen
 
 **HOST_IP**
-- IP Adresse oder Hostname des Servers
+- IP address or hostname of the server
 
 **HOST_PORT**
-- Port unter dem der Server erreichbar ist
+- Port under which the server is reachable
 
 **SECRET_KEY**
-- Sicherheitsschlüssel für Django.
-- Muss frei gewählt werden und geheim bleiben.n
+- Security key for Django.
+- Must be freely chosen and remain secret.
 
+---
 
 ## Erstelle Dockerfile
 ```bash
