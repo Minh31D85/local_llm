@@ -74,6 +74,7 @@ async function generate() {
 
             tokenCount += countToken(chunk);
         }   
+        ui.codeElement.textContent = "";
 
         const parsed = parseLLMRes(fullText);
 
@@ -179,7 +180,10 @@ async function loadHistory() {
 
             if(analysisField)analysisField.innerHTML = marked.parse(parsed.analysis);
             if(outputField){
-                outputField.textContent = entry.response;
+                const parsed = parseLLMRes(entry.response);
+                analysisField.innerHTML = marked.parse(parsed.analysis);
+                outputField.textContent = parsed.code;
+                applyLanguage(outputField, parsed.lang);
                 Prism.highlightElement(outputField);
             }
         }
@@ -227,18 +231,19 @@ function stopTimer(loader){
 
 
 function parseLLMRes(text){
-    const match = text.match(/```(\w+)?\n([\s\S]*?)```/);
-    
+    const codeRegex = /```([a-zA-Z0-9]*)\n([\s\S]*?)```/;
+    const match = text.match(codeRegex);
+
     if(!match){
         return { 
-            analysis: text, 
+            analysis: text.trim(), 
             code: "",
             lang: "plaintext"
         };
     }  
 
     const lang = match[1] || "plaintext";
-    const code = match[2];
+    const code = match[2].trim();
     
     const analysis = text.replace(match[0], "").trim();
     return { analysis, code, lang };
