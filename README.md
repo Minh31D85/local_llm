@@ -10,7 +10,8 @@ Ollama (lokale LLMs)
 Docker / Docker Compose
 
 Die Anwendung ermöglicht Codegenerierung über eine API und eine einfache Web-GUI.
----
+
+
 ## Features
 
 Lokale LLM Codegenerierung
@@ -34,7 +35,8 @@ PostgreSQL Datenbank
 Streamingfähige Antworten
 
 Web GUI
----
+
+
 ## Voraussetzungen
 
 Folgende Software wird benötigt:
@@ -44,12 +46,14 @@ Docker
 Docker Compose
 
 Linux / TrueNAS / Debian / Ubuntu Server
----
+
+
 ## Environment Variablen
 SERVER_IP	= IP Adresse oder Hostname des Servers
 HOST_PORT	= Port unter dem der Server erreichbar ist
 SECRET_KEY = Sicherheitsschlüssel für Django. Muss frei gewählt werden und geheim bleiben. Darf nicht veröffentlicht werden
----
+
+
 ## Erstelle Dockerfile
 ```bash
 cat <<'EOF' > Dockerfile
