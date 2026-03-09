@@ -87,10 +87,12 @@ def index(request):
 
 
 def stream_and_store(entry, stream):
+    print("STREAM START", entry.id)
     buffer = StringIO()
 
     try:
         for chunk in stream:
+            print("STREAM CHUNK", chunk[:50])
             buffer.write(chunk)
             yield chunk
 
