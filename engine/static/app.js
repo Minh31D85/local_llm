@@ -142,12 +142,13 @@ console.log("History loaded", data);
     container.innerHTML = "";
 
     data.forEach(entry => {
+console.log("Create history item", entry);
         const div = document.createElement("div");
         div.className = "history-item";
 
         const text = document.createElement("span");
         text.className = "history-text";
-        text.textContent = entry.prompt.substring(0, 40);
+        text.textContent = entry.prompt.replace(/\n/g, " ").substring(0, 40);
 
         const delBtn = document.createElement("button");
         delBtn.className = "history-delete";
@@ -181,6 +182,7 @@ console.log("History loaded", data);
         }
         container.appendChild(div);
     })
+    console.log("History DOM:", container.innerHTML);
 }
 
 
@@ -198,7 +200,6 @@ async function deleteEntry(id) {
         console.error("Connection error")
     }
 }
-
 
 
 let timerInterval = null;
