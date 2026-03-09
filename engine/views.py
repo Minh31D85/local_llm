@@ -3,6 +3,7 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
 from django.http import StreamingHttpResponse
+from io import StringIO
 
 from .llm.router import LLMRouter
 from .prompt_builder import build_prompts
@@ -29,11 +30,16 @@ def generate_code(request):
         system_prompt, user_prompt = build_prompts(prompt)
     except ValueError as e:
         return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
- 
     
     model, stream = router.stream(system_prompt, user_prompt)
 
-    wrapped_stream = stream_and_store(prompt, model, stream)
+    entry = LLMRequest.objects.create(
+        prompt=prompt,
+        model=model,
+        response=""
+    )
+
+    wrapped_stream = stream_and_store(entry, stream)
 
     response = StreamingHttpResponse(
         wrapped_stream, 
@@ -65,6 +71,7 @@ def history(request):
     return Response(data)
 
 
+
 @api_view(["DELETE"])
 def del_history_entry(request, entry_id):
     try:
@@ -79,25 +86,26 @@ def index(request):
     return render(request, "index.html")
 
 
-def stream_and_store(prompt, model, stream):
-    full_response = []
+def stream_and_store(entry, stream):
+    buffer = StringIO()
+
     try:
         for chunk in stream:
-            full_response.append(chunk)
+            buffer.write(chunk)
             yield chunk
+
+    except Exception:
+        entry.delete()
+        raise
+
     finally:
-        final_text = "".join(full_response).strip()
+        final_text = buffer.getvalue().strip()
         final_text = clean_output(final_text)
 
         if not final_text:
+            entry.delete()
             return
         
-        if final_text.startswith("LLM "):
-            return
-
-        LLMRequest.objects.create(
-            prompt=prompt,
-            model=model,
-            response=final_text
-        )
+        entry.response = final_text
+        entry.save(update_fields=["response"])
 
