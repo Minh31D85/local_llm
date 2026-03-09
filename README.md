@@ -203,11 +203,14 @@ EOF
 sudo docker compose down -v
 sudo docker compose up --build -d
 ```
-**-v** Additionally deletes all Docker volumes (e.g., database data).
+**-v** 
+- Additionally deletes all Docker volumes (e.g., database data).
 
-**--build** Rebuilds the Docker image before starting the containers.
+**--build** 
+- Rebuilds the Docker image before starting the containers.
 
-**-d** Starts the containers in the background (detached mode).
+**-d** 
+- Starts the containers in the background (detached mode).
 
 ---
 
@@ -262,6 +265,7 @@ sudo docker compose logs -f
 
 ## Open web GUI
 http://HOST_IP:HOST_PORT/api/code/
+
 
 
 
