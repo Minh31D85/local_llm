@@ -1,4 +1,4 @@
-### AI Code
+# AI Code
 
 Self-hosted AI Code Generation Service basierend auf:
 
