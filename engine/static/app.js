@@ -132,18 +132,15 @@ function resetOutput(ui){
 
 
 async function loadHistory() {
-console.log("LOAD HISTORY CALLED");   
     const container = document.getElementById("history");
-console.log("Container:", container);
     if(!container) return;
     
     const response = await fetch("/api/code/history/");
     const data =  await response.json();
-console.log("History loaded", data);
+
     container.innerHTML = "";
 
     data.forEach(entry => {
-console.log("Create history item", entry);
         const div = document.createElement("div");
         div.className = "history-item";
 
@@ -172,10 +169,15 @@ console.log("Create history item", entry);
 
         div.onclick = (e) => {
             if(e.target.closest(".history-delete")) return;
+
             const promptField = document.getElementById("prompt");
             const outputField = document.getElementById("output-code");
+            const analysisField = document.getElementById("analysis");
 
             if(promptField)promptField.value = entry.prompt;
+            const parsed = parseLLMRes(entry.response);
+
+            if(analysisField)analysisField.innerHTML = marked.parse(parsed.analysis);
             if(outputField){
                 outputField.textContent = entry.response;
                 Prism.highlightElement(outputField);
@@ -183,7 +185,6 @@ console.log("Create history item", entry);
         }
         container.appendChild(div);
     })
-    console.log("History DOM:", container.innerHTML);
 }
 
 
