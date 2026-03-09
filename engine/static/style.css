@@ -236,11 +236,14 @@ h1 {
 
 #output pre {
     margin: 0;
+    white-space: pre-wrap;
 }
 
 #output code {
     display: block;
-    white-space: pre;
+    white-space: pre-wrap;
+    word-break: break-word;
+    overflow-wrap: break-word;
     font-family:
         "JetBrains Mono",
         "Fira Code",
