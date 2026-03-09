@@ -259,7 +259,7 @@ function applyLanguage(codeElement, lang){
         sh: "bash"
     }
 
-    const normalized = map[lang] || lang || "plaintext"
+    const normalized = map[lang] || lang || "plaintext";
 
     codeElement.className = "";
     codeElement.classList.add("language-" + normalized);
