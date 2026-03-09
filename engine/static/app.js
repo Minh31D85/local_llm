@@ -169,7 +169,7 @@ console.log("History loaded", data);
         div.appendChild(delBtn);
 
         div.onclick = (e) => {
-            if(e.target === delBtn) return;
+            if(e.target.closest(".history-delete")) return;
             const promptField = document.getElementById("prompt");
             const outputField = document.getElementById("output-code");
 
