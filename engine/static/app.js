@@ -251,6 +251,16 @@ function parseLLMRes(text){
 
 
 function applyLanguage(codeElement, lang){
+    const map = {
+        ts: "typescript",
+        js: "javascript",
+        py: "python",
+        cs: "csharp",
+        sh: "bash"
+    }
+
+    const normalized = map[lang] || lang || "plaintext"
+
     codeElement.className = "";
-    codeElement.classList.add("language-" + lang);
+    codeElement.classList.add("language-" + normalized);
 }
