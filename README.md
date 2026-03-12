@@ -7,7 +7,7 @@ Built with:
 - **Django / Django REST** – Backend und API
 - **PostgreSQL** – Persistente Datenbank
 - **Ollama** – Lokale Large Language Models (LLMs)
-- **uv** – schneller Python Dependency Manager
+- **uv** – Python Dependency Manager
 - **Docker / Docker Compose** – Containerisierte Infrastruktur
 
 The system allows **local code generation through an API or a simple web GUI**.
@@ -261,6 +261,7 @@ sudo docker compose logs -f
 ```bash
 http://HOST_IP:HOST_PORT/api/code/
 ```
+
 
 
 
