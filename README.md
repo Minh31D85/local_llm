@@ -130,22 +130,17 @@ services:
     build: .
     container_name: ai_code
     restart: unless-stopped
-
     ports:
       - "8002:8000"
-
     env_file:
       - .env
-
     depends_on:
       - ollama
-
     command: >
       gunicorn config.wsgi:application
       --bind 0.0.0.0:8000
       --workers 3
       --timeout 300
-
     networks:
       - postgres_network
 
@@ -153,16 +148,12 @@ services:
     image: ollama/ollama
     container_name: ai_ollama
     restart: unless-stopped
-
     ports:
       - "11434:11434"
-
     volumes:
       - ollama_data:/root/.ollama
-
     networks:
       - postgres_network
-
 
 volumes:
   ollama_data:
@@ -268,6 +259,7 @@ sudo docker compose logs -f
 ```bash
 http://HOST_IP:HOST_PORT/api/code/
 ```
+
 
 
 
