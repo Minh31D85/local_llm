@@ -21,7 +21,7 @@ class OllamaService:
     def generate(self, model: str, system_prompt: str, user_prompt: str):
         try:
             response = self.session.post(
-                f"{self.base_url}/api/generate",
+                f"{self.base_url}/generate",
                 json={
                     "model": model,
                     "system": system_prompt,
