@@ -46,7 +46,7 @@ async function generate() {
     let fullText = "";
 
     try{
-        const response = await fetch("/api/code/generate/", {
+        const response = await fetch("/code/generate/", {
             method: "POST",
             headers:{
                 "Content-Type": "application/json"
@@ -136,7 +136,7 @@ async function loadHistory() {
     const container = document.getElementById("history");
     if(!container) return;
     
-    const response = await fetch("/api/code/history/");
+    const response = await fetch("/code/history/");
     const data =  await response.json();
 
     container.innerHTML = "";
@@ -195,7 +195,7 @@ async function loadHistory() {
 
 async function deleteEntry(id) {
     try{
-        const response = await fetch(`/api/code/history/${id}/`, {
+        const response = await fetch(`/code/history/${id}/`, {
             method: "DELETE"
         });
         if(!response.ok){
