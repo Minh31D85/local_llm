@@ -37,7 +37,7 @@ class OllamaService:
                     }
                 },
                 stream=True,
-                timeout=900
+                timeout=1000
             )
             response.raise_for_status()
 
@@ -46,7 +46,7 @@ class OllamaService:
                     continue
 
                 try:
-                    data = json.loads(line)
+                    data = json.loads(line.decode("utf-8"))
                 
                 except json.JSONDecodeError:
                     continue
@@ -66,3 +66,6 @@ class OllamaService:
         except Exception as e:
             return f"LLM error: {str(e)}"
         
+        finally:
+            if response is not None:
+                response.close()
