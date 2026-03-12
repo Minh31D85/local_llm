@@ -189,11 +189,6 @@ DB_PASSWORD=password
 DB_HOST=postgres
 DB_PORT=5432
 
-# Für den Postgres Container
-POSTGRES_DB=ai_db
-POSTGRES_USER=ai_user
-POSTGRES_PASSWORD=password
-
 OLLAMA_BASE_URL=http://ollama:11434
 
 ALLOWED_HOST=127.0.0.1,localhost,HOST_IP
@@ -273,6 +268,7 @@ sudo docker compose logs -f
 ```bash
 http://HOST_IP:HOST_PORT/api/code/
 ```
+
 
 
 
