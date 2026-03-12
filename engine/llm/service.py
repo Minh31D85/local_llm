@@ -46,7 +46,7 @@ class OllamaService:
                     continue
 
                 try:
-                    data = json.loads(line.decode("utf-8"))
+                    data = json.loads(line)
                 
                 except json.JSONDecodeError:
                     continue
@@ -66,6 +66,3 @@ class OllamaService:
         except Exception as e:
             return f"LLM error: {str(e)}"
         
-        finally:
-            if response is not None:
-                response.close()
