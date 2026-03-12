@@ -126,44 +126,50 @@ cat <<'EOF' > docker-compose.yml
 version: "3.9"
 
 services:
-  postgres:
-    image: postgres:16
-    container_name: ai_postgres
-    restart: always
-    env_file:
-      - .env
-    volumes:
-      - pg_data:/var/lib/postgresql/data
-
   ai_code:
     build: .
     container_name: ai_code
-    restart: always
+    restart: unless-stopped
+
     ports:
-      - "${HOST_PORT}:8000"
+      - "8002:8000"
+
     env_file:
       - .env
+
     depends_on:
-      - postgres
       - ollama
+
     command: >
       gunicorn config.wsgi:application
       --bind 0.0.0.0:8000
       --workers 3
       --timeout 300
 
+    networks:
+      - postgres_network
+
   ollama:
     image: ollama/ollama
     container_name: ai_ollama
-    restart: always
+    restart: unless-stopped
+
     ports:
       - "11434:11434"
+
     volumes:
       - ollama_data:/root/.ollama
 
+    networks:
+      - postgres_network
+
+
 volumes:
-  pg_data:
   ollama_data:
+
+networks:
+  postgres_network:
+    external: true
 EOF
 ```
 
@@ -267,6 +273,7 @@ sudo docker compose logs -f
 ```bash
 http://HOST_IP:HOST_PORT/api/code/
 ```
+
 
 
 
