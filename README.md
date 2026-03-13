@@ -22,6 +22,7 @@ The system allows **local code generation through an API or a simple web GUI**.
 ![PostgreSQL](https://img.shields.io/badge/PostgreSQL-database-4169E1?logo=postgresql&logoColor=white)
 ![Ollama](https://img.shields.io/badge/AI-Ollama-orange)
 ![uv](https://img.shields.io/badge/package_manager-uv-purple)
+![License](https://img.shields.io/badge/license-MIT-green)
 
 ---
 
@@ -261,6 +262,7 @@ sudo docker compose logs -f
 ```bash
 http://HOST_IP:HOST_PORT/api/code/
 ```
+
 
 
 
