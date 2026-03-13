@@ -16,11 +16,11 @@ The system allows **local code generation through an API or a simple web GUI**.
 
 # Badges
 
-![Python](https://img.shields.io/badge/python-3.12-blue)
-![Django](https://img.shields.io/badge/framework-django-green)
-![Docker](https://img.shields.io/badge/docker-supported-blue)
-![PostgreSQL](https://img.shields.io/badge/database-postgresql-blue)
-![Ollama](https://img.shields.io/badge/AI-ollama-orange)
+![Python](https://img.shields.io/badge/Python-3.12-3776AB?logo=python&logoColor=white)
+![Django](https://img.shields.io/badge/Django-framework-092E20?logo=django&logoColor=white)
+![Docker](https://img.shields.io/badge/Docker-supported-2496ED?logo=docker&logoColor=white)
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL-database-4169E1?logo=postgresql&logoColor=white)
+![Ollama](https://img.shields.io/badge/AI-Ollama-orange)
 ![uv](https://img.shields.io/badge/package_manager-uv-purple)
 
 ---
@@ -261,6 +261,7 @@ sudo docker compose logs -f
 ```bash
 http://HOST_IP:HOST_PORT/api/code/
 ```
+
 
 
 
