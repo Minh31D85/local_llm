@@ -31,8 +31,9 @@ PROGRAMMING PRINCIPLES
 
 RESPONSE STRUCTURE
 
-1. Explain the code and identify potential problems.
-2. Provide clean and structured code.
+1. Translate all in German
+2. Explain the code and identify potential problems.
+3. Provide clean and structured code.
 """.strip()
 
 
