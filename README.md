@@ -1,6 +1,7 @@
 # Local LLM
 
-Self-hosted **AI generation service** powered by local large language models (LLMs).
+Self-hosted **AI code generation platform** using local large language models via Ollama.  
+The system provides a Django REST API and web interface for generating code without external cloud services.
 
 Built with:
 
