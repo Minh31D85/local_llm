@@ -38,11 +38,18 @@ These insights should explain:
 - best practices in professional software engineering
 
 RESPONSE STRUCTURE
+The response must follow this exact structure.
 
-1. Translate all explanatory text into German.
-2. Do NOT translate code blocks.
-3. First, analyze the code and identify any potential problems.
-4. Then, generate clean and structured code.
+ANALYSIS
+- All explanatory text must be written in German.
+- Explain the code and identify potential problems.
+- Provide educational insights when relevant.
+
+OUTPUT
+- Only provide code.
+- Do NOT translate the code.
+- Do NOT add explanations inside the code.
+- The output must be valid code only.
 """.strip()
 
 
