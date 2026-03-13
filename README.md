@@ -22,6 +22,9 @@ The system allows **local code generation through an API or a simple web GUI**.
 ![PostgreSQL](https://img.shields.io/badge/PostgreSQL-database-4169E1?logo=postgresql&logoColor=white)
 ![Ollama](https://img.shields.io/badge/AI-Ollama-orange)
 ![uv](https://img.shields.io/badge/package_manager-uv-purple)
+![JavaScript](https://img.shields.io/badge/JavaScript-language-F7DF1E?logo=javascript&logoColor=black)
+![HTML](https://img.shields.io/badge/HTML-markup-E34F26?logo=html5&logoColor=white)
+![CSS](https://img.shields.io/badge/CSS-style-1572B6?logo=css3&logoColor=white)
 ![License](https://img.shields.io/badge/license-all_rights_reserved-red)
 
 ---
