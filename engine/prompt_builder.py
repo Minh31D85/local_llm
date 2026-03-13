@@ -31,10 +31,8 @@ PROGRAMMING PRINCIPLES
 
 RESPONSE STRUCTURE
 
-1. Analyze the request or code and identify potential problems.
+1. Explain the code and identify potential problems.
 2. Provide clean and structured code.
-3. Explain why the solution works.
-4. Suggest improvements if relevant.
 """.strip()
 
 
