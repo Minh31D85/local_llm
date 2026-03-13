@@ -22,7 +22,7 @@ The system allows **local code generation through an API or a simple web GUI**.
 ![PostgreSQL](https://img.shields.io/badge/PostgreSQL-database-4169E1?logo=postgresql&logoColor=white)
 ![Ollama](https://img.shields.io/badge/AI-Ollama-orange)
 ![uv](https://img.shields.io/badge/package_manager-uv-purple)
-![License](https://img.shields.io/badge/license-MIT-green)
+![License](https://img.shields.io/badge/license-all_rights_reserved-red)
 
 ---
 
@@ -115,7 +115,7 @@ RUN python manage.py collectstatic --noinput
 
 EXPOSE 8000
 
-CMD ["gunicorn", "config.wsgi:application", "--bind", "0.0.0.0:8000", "--workers", "3", "--timeout", "300", "--keep-alive", "5"]
+CMD ["gunicorn", "config.wsgi:application", "--bind", "0.0.0.0:8000", "--workers", "3", "--timeout", "2000", "--keep-alive", "5"]
 EOF
 ```
 
@@ -134,16 +134,11 @@ services:
     container_name: ai_code
     restart: unless-stopped
     ports:
-      - "8002:8000"
+      - "${HOST_PORT}$:8000"
     env_file:
       - .env
     depends_on:
       - ollama
-    command: >
-      gunicorn config.wsgi:application
-      --bind 0.0.0.0:8000
-      --workers 3
-      --timeout 300
     networks:
       - postgres_network
 
@@ -179,13 +174,13 @@ SECRET_KEY=CHANGE_ME
 
 DB_NAME=ai_db
 DB_USER=ai_user
-DB_PASSWORD=password
+DB_PASSWORD=CHANGE_ME
 DB_HOST=postgres
 DB_PORT=5432
 
 OLLAMA_BASE_URL=http://ollama:11434
 
-ALLOWED_HOST=127.0.0.1,localhost,HOST_IP
+ALLOWED_HOST=127.0.0.1,localhost,<HOST_IP>
 CORS_ALLOWED_ORIGINS=http://localhost:5173,http://HOST_IP:5173
 CSRF_TRUSTED_ORIGINS=http://HOST_IP:HOST_PORT
 EOF
@@ -250,6 +245,7 @@ Write a hello world in Python
 **End with:**
 Press **Ctrl + D** to exit
 
+---
 
 ## View logs
 
@@ -258,12 +254,28 @@ Press **Ctrl + D** to exit
 sudo docker compose logs -f 
 ```
 
+---
+
 ## Open web GUI
 ```bash
 http://HOST_IP:HOST_PORT/api/code/
 ```
 
+---
 
+## License
+This project is not open source.
+
+All rights reserved.
+
+The source code is provided for viewing purposes only.
+
+You are not permitted to:
+
+copy the code
+reuse the code
+redistribute the code
+use the code commercially
 
 
 
