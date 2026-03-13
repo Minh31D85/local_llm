@@ -272,10 +272,10 @@ The source code is provided for viewing purposes only.
 
 You are not permitted to:
 
-copy the code
-reuse the code
-redistribute the code
-use the code commercially
+- copy the code
+- reuse the code
+- redistribute the code
+- use the code commercially
 
 
 
